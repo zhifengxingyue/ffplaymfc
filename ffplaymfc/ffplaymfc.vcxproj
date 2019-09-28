@@ -71,6 +71,12 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
+    <PreBuildEvent>
+      <Command>editbin /SUBSYSTEM:CONSOLE $(OutDir)\$(ProjectName).exe</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>editbin /SUBSYSTEM:CONSOLE $(OutDir)\$(ProjectName).exe</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

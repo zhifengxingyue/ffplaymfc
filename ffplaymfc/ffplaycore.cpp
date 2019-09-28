@@ -604,6 +604,8 @@ int ffmfc_param_aframe(VideoState* is, AVFrame* pFrame, AVPacket* packet) {
 	//------------------------------
 	CString f_index, packet_size, pts;
 	//---------------
+	//注：aframe_index不可以直接赋值！
+	//务必使用f_index执行Format!再赋值
 	f_index.Format(_T("%d"), aframe_index);
 	//获取当前记录条数
 	int nIndex = dlg->addlg->m_audiodecodelist.GetItemCount();
@@ -612,8 +614,6 @@ int ffmfc_param_aframe(VideoState* is, AVFrame* pFrame, AVPacket* packet) {
 	lvitem.mask = LVIF_TEXT;
 	lvitem.iItem = nIndex;
 	lvitem.iSubItem = 0;
-	//注：frame_index不可以直接赋值！
-	//务必使用f_index执行Format!再赋值！
 	lvitem.pszText = f_index.GetBuffer();
 	//------------------------
 	packet_size.Format(_T("%d"), packet->size);
@@ -1152,8 +1152,15 @@ static void video_audio_display(VideoState* s)
 	else {
 		i_start = s->last_i_start;
 	}
-
-	bgcolor = SDL_MapRGB(screen->format, 0x00, 0x00, 0x00);
+	if (NULL != screen->format) {
+		bgcolor = SDL_MapRGB(screen->format, 0x00, 0x00, 0x00);
+	}
+	else
+	{
+		printf("screen->format is null ,return\n");
+		return;
+	}
+	
 	if (s->show_mode == SHOW_MODE_WAVES) {
 		fill_rectangle(screen,
 			s->xleft, s->ytop, s->width, s->height,
@@ -3433,17 +3440,22 @@ static void event_loop(VideoState* cur_stream)
 			switch (event.key.keysym.sym) {
 			case SDLK_ESCAPE:
 			case SDLK_q:
+				//退出程序，对应键盘上“Esc”键的响应
+				printf("退出\n");
 				do_exit(cur_stream);
 				dlg->OnBnClickedStop();
 				break;
 			case SDLK_f:
-				//全屏
+				//全屏,对应键盘上“F”键的响应
+				printf("全屏\n");
 				toggle_full_screen(cur_stream);
 				cur_stream->force_refresh = 1;
 				break;
 			case SDLK_p:
-				//暂停
+				//暂停,对应键盘上“P”键的响应。功能是暂停播放。
 			case SDLK_SPACE:
+				//暂停,对应键盘上“空格”键的响应。功能是暂停播放。
+				printf("暂停\n");
 				toggle_pause(cur_stream);
 				break;
 			case SDLK_s: // S: Step to next frame
