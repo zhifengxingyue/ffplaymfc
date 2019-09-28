@@ -4,3 +4,9 @@ Release/
 ipch/
 #¹ýÂË
 *.sdf
+/.vs/ffplaymfc/v16/.suo
+/.vs/ffplaymfc/v16/Browse.VC.db
+/.vs/ffplaymfc/v16/Browse.VC.opendb
+/.vs/ProjectSettings.json
+/.vs/slnx.sqlite
+/.vs/VSWorkspaceState.json
